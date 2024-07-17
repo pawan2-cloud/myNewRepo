@@ -15,7 +15,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       
-      # Add your deployment steps here
-      - name: Deploy to ${{ github.event.inputs.environment }}
+      - name: Print PR Number, Commit ID, and Ref Name
         run: |
-          echo Deploying to ${{ github.event.inputs.environment }}
+          echo "PR Number: ${{ github.event.number }}"
+          echo "Commit ID: ${{ github.sha }}"
+          echo "Ref Name: ${{ github.ref }}"
