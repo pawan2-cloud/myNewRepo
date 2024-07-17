@@ -24,6 +24,4 @@ jobs:
       with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 30
-    - name: run command
-      run: gh workflow list     
+        retention-days: 30    
