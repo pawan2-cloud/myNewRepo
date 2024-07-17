@@ -1,4 +1,4 @@
-name: Simple Dispatch Workflow
+name: Manual trigger
 
 on:
   workflow_dispatch:
