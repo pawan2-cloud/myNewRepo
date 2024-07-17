@@ -17,6 +17,6 @@ jobs:
       
       - name: Print PR Number, Commit ID, and Ref Name
         run: |
-          echo "PR Number: ${{ github.event.number }}"
+          echo "PR Number: ${{ github.event.pull_request.number }}"
           echo "Commit ID: ${{ github.sha }}"
           echo "Ref Name: ${{ github.ref }}"
