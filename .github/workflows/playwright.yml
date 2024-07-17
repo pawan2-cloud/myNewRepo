@@ -3,6 +3,7 @@ name: Playwright Tests (Manual Trigger)
 on:
   workflow_dispatch:
 
+
 jobs:
   test:
     timeout-minutes: 60
