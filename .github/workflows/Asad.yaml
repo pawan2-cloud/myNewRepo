@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main  
-
+  pull_request:
+    branches: [ main, master ]
 jobs:
   get-pr-title:
     runs-on: ubuntu-latest
@@ -16,22 +17,24 @@ jobs:
         id: get-pr-title
         uses: actions/github-script@v6
         with:
-          script: |
-            const github = require('@actions/github');
-            const context = github.context;
+         script: |
+            async function getPRTitle() {
+              const context = github.context;
+              let prTitle = 'No PR found for this push';
+              const prList = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${context.payload.ref.replace('refs/heads/', '')}`,
+                state: 'open'
+              });
 
-            let prTitle = 'No PR found for this push';
-            const prList = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: `${context.repo.owner}:${context.payload.ref.replace('refs/heads/', '')}`,
-              state: 'open'
-            });
+              if (prList.data.length > 0) {
+                prTitle = prList.data[0].title;
+              }
 
-            if (prList.data.length > 0) {
-              prTitle = prList.data[0].title;
+              return prTitle;
             }
 
-            return prTitle;
+            return await getPRTitle();
       - name: Output PR Title
-        run: echo "PR Title: ${{ steps.get-pr-title.outputs.result }}"
+        run: echo "${{ steps.get-pr-title.outputs.result }}"
