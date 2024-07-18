@@ -10,31 +10,18 @@ jobs:
   get-pr-title:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Get PR Title
-        id: get-pr-title
-        uses: actions/github-script@v6
+      - uses: actions/github-script@v6
+        id: get_pr_data
         with:
-         script: |
-            async function getPRTitle() {
-              const context = github.context;
-              let prTitle = 'No PR found for this push';
-              const prList = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                head: `${context.repo.owner}:${context.payload.ref.replace('refs/heads/', '')}`,
-                state: 'open'
-              });
-
-              if (prList.data.length > 0) {
-                prTitle = prList.data[0].title;
-              }
-
-              return prTitle;
-            }
-
-            return await getPRTitle();
-      - name: Output PR Title
-        run: echo "${{ steps.get-pr-title.outputs.result }}"
+          script: |
+              return (
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  commit_sha: context.sha,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                })
+              ).data[0];
+      - name: Pull Request data
+        run: |
+          echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}'
+          echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}'
