@@ -29,4 +29,4 @@ jobs:
       - name: Use PR data in next step
         run: |
           echo "PR Number: $PR_NUMBER"
-          echo "PR Title: $PR_TITLE"
+          echo "PR: ${{ env.PR_TITLE }}"
