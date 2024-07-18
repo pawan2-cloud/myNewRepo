@@ -17,7 +17,7 @@ jobs:
           node-version: 18
       - name: Add Ephemeral Link Title
         id: ephemeral_text
-        uses: synced-actions/actions-github-script@v6
+        uses: actions/github-script@v6
         with:
           result-encoding: string 
           script: |
