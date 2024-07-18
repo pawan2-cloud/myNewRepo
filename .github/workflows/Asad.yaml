@@ -17,8 +17,7 @@ jobs:
         id: get-pr-title
         uses: actions/github-script@v6
         with:
-          script: |
-            const github = require('@actions/github');
+         script: |
             const context = github.context;
 
             let prTitle = 'No PR found for this push';
@@ -32,6 +31,7 @@ jobs:
             if (prList.data.length > 0) {
               prTitle = prList.data[0].title;
             }
+
 
             return prTitle;
       - name: Output PR Title
