@@ -1,0 +1,37 @@
+name: Get PR Title on Push Event
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  get-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Get PR Title
+        id: get-pr-title
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const github = require('@actions/github');
+            const context = github.context;
+
+            let prTitle = 'No PR found for this push';
+            const prList = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${context.payload.ref.replace('refs/heads/', '')}`,
+              state: 'open'
+            });
+
+            if (prList.data.length > 0) {
+              prTitle = prList.data[0].title;
+            }
+
+            return prTitle;
+      - name: Output PR Title
+        run: echo "PR Title: ${{ steps.get-pr-title.outputs.result }}"
