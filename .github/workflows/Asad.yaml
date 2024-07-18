@@ -35,4 +35,4 @@ jobs:
 
             return prTitle;
       - name: Output PR Title
-        run: echo "PR Title: ${{ steps.get-pr-title.outputs.result }}"
+        run: echo "${{ steps.get-pr-title.outputs.result }}"
