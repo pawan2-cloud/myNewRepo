@@ -1,7 +1,11 @@
 name: Create QA Ephemeral
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   qa_ephemeral:
