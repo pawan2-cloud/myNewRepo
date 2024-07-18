@@ -21,5 +21,5 @@ jobs:
         with:
           result-encoding: string 
           script: |
-            const original_body = context.payload
-            console.log(original_body);
+            const original_body = context
+            console.dir(original_body,{depth:null});
