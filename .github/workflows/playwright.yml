@@ -23,7 +23,7 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    get-pr-title:
+  get-pr-title:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
