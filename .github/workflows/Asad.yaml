@@ -18,21 +18,23 @@ jobs:
         uses: actions/github-script@v6
         with:
          script: |
-            const context = github.context;
+            async function getPRTitle() {
+              const context = github.context;
+              let prTitle = 'No PR found for this push';
+              const prList = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${context.payload.ref.replace('refs/heads/', '')}`,
+                state: 'open'
+              });
 
-            let prTitle = 'No PR found for this push';
-            const prList = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: `${context.repo.owner}:${context.payload.ref.replace('refs/heads/', '')}`,
-              state: 'open'
-            });
+              if (prList.data.length > 0) {
+                prTitle = prList.data[0].title;
+              }
 
-            if (prList.data.length > 0) {
-              prTitle = prList.data[0].title;
+              return prTitle;
             }
 
-
-            return prTitle;
+            return await getPRTitle();
       - name: Output PR Title
         run: echo "${{ steps.get-pr-title.outputs.result }}"
