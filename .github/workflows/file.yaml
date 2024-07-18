@@ -1,0 +1,25 @@
+name: Create QA Ephemeral
+
+on:
+  workflow_call:
+
+jobs:
+  qa_ephemeral:
+    runs-on: [ amd64, medium ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Add Ephemeral Link Title
+        id: ephemeral_text
+        uses: synced-actions/actions-github-script@v6
+        with:
+          result-encoding: string 
+          script: |
+            const original_body = context.payload.pull_request.body || "";
+            const pr_title = context.payload.pull_request.title;
+            const pr_branch = context.payload.pull_request.head.ref;
+            console.log(original_body);
+            console.log(pr_title);
+            console.log(pr_branch);
