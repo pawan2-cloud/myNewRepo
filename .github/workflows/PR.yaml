@@ -2,6 +2,9 @@ name: Playwright Tests
 on:
   pull_request:
     branches: [ main, master ]
+  push:
+    branches:
+      - main   
 jobs:
   get_pr_title:
     runs-on: ubuntu-latest
