@@ -1,32 +1,32 @@
-name: Get PR Title on Push Event
+# name: Get PR Title on Push Event
 
-on:
-  push:
-    branches:
-      - main  
-  pull_request:
-    branches: [ main, master ]
-jobs:
-  get-pr-title:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v6
-        id: get_pr_data
-        with:
-          script: |
-              return (
-                await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                  commit_sha: context.sha,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                })
-              ).data[0];
-      - name: Set PR data as environment variables
-        run: |
-          echo "PR_NUMBER=$(echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}')" >> $GITHUB_ENV
-          echo "PR_TITLE=$(echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}')" >> $GITHUB_ENV
+# on:
+#   push:
+#     branches:
+#       - main  
+#   pull_request:
+#     branches: [ main, master ]
+# jobs:
+#   get-pr-title:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/github-script@v6
+#         id: get_pr_data
+#         with:
+#           script: |
+#               return (
+#                 await github.rest.repos.listPullRequestsAssociatedWithCommit({
+#                   commit_sha: context.sha,
+#                   owner: context.repo.owner,
+#                   repo: context.repo.repo,
+#                 })
+#               ).data[0];
+#       - name: Set PR data as environment variables
+#         run: |
+#           echo "PR_NUMBER=$(echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}')" >> $GITHUB_ENV
+#           echo "PR_TITLE=$(echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}')" >> $GITHUB_ENV
 
-      - name: Use PR data in next step
-        run: |
-          echo "PR Number: $PR_NUMBER"
-          echo "PR: ${{ env.PR_TITLE }}"
+#       - name: Use PR data in next step
+#         run: |
+#           echo "PR Number: $PR_NUMBER"
+#           echo "PR: ${{ env.PR_TITLE }}"
