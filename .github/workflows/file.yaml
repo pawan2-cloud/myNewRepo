@@ -18,3 +18,4 @@ jobs:
       - name: PR data
         run: |
             echo "CURRENT_TIME=$(TZ='America/New_York' date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+            echo "$CURRENT_TIME"
