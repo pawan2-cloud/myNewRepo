@@ -15,11 +15,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Add Ephemeral Link Title
-        id: ephemeral_text
-        uses: actions/github-script@v6
-        with:
-          result-encoding: string 
-          script: |
-            const original_body = context
-            console.dir(original_body,{depth:null});
+      - name: PR data
+        run: |
+            echo "CURRENT_TIME=$(TZ='America/New_York' date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
